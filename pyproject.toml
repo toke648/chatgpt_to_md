@@ -7,7 +7,7 @@ name = "chatgpt-to-md"
 version = "0.1.0"
 description = "将ChatGPT导出的对话转换为Markdown文件"
 authors = [
-    {name = "toke648", email = "tim16673802@qq.com"}
+    {name = "toke648", email = "tim16673802@email.com"}
 ]
 readme = "README.md"
 license = {text = "MIT"}
@@ -25,7 +25,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/chatgpt-to-md"
+Homepage = "https://github.com/toke648/chatgpt-to-md"
 
 [project.scripts]
 chatgpt-to-md = "chatgpt_to_md.core:main"
