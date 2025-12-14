@@ -3,19 +3,18 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "chatgpt-to-md"
+name = "ai-conversation-exporter"
 version = "0.1.0"
-description = "将ChatGPT导出的对话转换为Markdown文件"
-authors = [
-    {name = "toke648", email = "tim16673802@email.com"}
-]
+description = "Export conversations from multiple AI platforms (ChatGPT, DeepSeek, Claude) to Markdown"
+authors = [{name = "toke648", email = "tim16673802@gmail.com"}]
 readme = "README.md"
 license = {text = "MIT"}
-keywords = ["chatgpt", "markdown", "export", "converter"]
 requires-python = ">=3.7"
+keywords = ["chatgpt", "deepseek", "claude", "export", "markdown", "ai"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
@@ -25,7 +24,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/toke648/chatgpt-to-md"
+Homepage = "https://github.com/yourusername/ai-exporter"
 
 [project.scripts]
-chatgpt-to-md = "chatgpt_to_md.core:main"
+ai-export = "ai_exporter.core:main"

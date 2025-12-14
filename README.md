@@ -1,124 +1,86 @@
-# ChatGPT to Markdown
+# AI Conversation Exporter
 
-一个简单的工具，将ChatGPT导出的zip文件转换为漂亮的Markdown文件。
+导出多个 AI 平台（ChatGPT、DeepSeek、Claude、以及通用 JSON/JSONL）的对话为整洁的 Markdown 文件。
+
+## 特性
+
+- ✅ 自动识别多种导出格式（包含 ChatGPT `conversations.json` 直读）
+- ✅ 支持 Zip（ChatGPT 官方导出）、JSON、JSONL
+- ✅ YAML frontmatter 元信息（标题、平台、导出时间、消息数）
+- ✅ 规范的角色映射（user/assistant/system/tool）
+- ✅ 命令行工具 `ai-export`，简单易用
 
 ## 安装
 
+本项目尚未发布到 PyPI。请在源码目录内安装：
+
 ```bash
-pip install chatgpt-to-md
+pip install ai-conversation-exporter
 ```
 
-## 使用方法
-
-### 命令行使用
+安装后将获得命令：
 
 ```bash
-# 基本用法
-chatgpt-to-md conversation.zip
+ai-export --help
+```
+
+## 使用示例
+
+```bash
+# 1) ChatGPT 官方导出 zip（包含 conversations.json）
+ai-export chatgpt_export.zip
+
+# 2) 直接解析 ChatGPT 的 conversations.json（无需 zip）
+ai-export conversations.json
+
+# 3) DeepSeek 导出（数组 JSON / API JSON / JSONL）
+ai-export deepseek_export.json
+ai-export deepseek_export.jsonl
+
+# 4) Claude 导出 JSON
+ai-export claude_chat.json
 
 # 指定输出目录
-chatgpt-to-md conversation.zip -o ./my_chats
+ai-export conversations.json -o ./ai_output
 ```
 
-### Python中使用
+## 支持的输入格式
 
-```python
-from chatgpt_to_md import convert
+- ChatGPT
+  - `.zip`（官方导出包，自动在包内查找 `conversations.json`）
+  - `conversations.json`（直接解析）
+  - 消息结构同时兼容：
+    - 经典结构：`message.content.parts[] + message.author.role`
+    - 变体结构：`message.fragments[]`（`REQUEST` → user，`RESPONSE` → assistant）
 
-convert("conversation.zip", "./output")
-```
+- DeepSeek
+  - 数组 JSON（含 `conversation_id` / `messages`）
+  - API JSON（顶层 `messages`）
+  - JSONL（每行一条 `{"role","content"}`）
 
-## 功能特点
+- Claude
+  - JSON（顶层 `conversation` 或 `messages`）
 
-- ✅ 自动解压zip文件
-- ✅ 转换所有对话为独立的Markdown文件
-- ✅ 包含YAML front matter元数据
-- ✅ 按时间排序对话消息
-- ✅ 自动处理文件名中的非法字符
+- 通用 JSON/JSONL（Unknown）
+  - 自动兜底识别常见字段（`mapping`/`messages`/`conversation`），最大化导出成功率
 
-## 许可证
+## 输出格式
+
+- 每个会话导出为单独的 Markdown 文件，命名：`YYYYMMDD_HHMMSS_标题.md`
+- 文件内容包含：
+  - YAML frontmatter（`title`、`platform`、`export_date`、`message_count`）
+  - 标题与概要信息
+  - 顺序排列的消息区块（按可用的时间戳排序）
+
+## 常见问题
+
+- 看到“无法识别格式，使用通用解析器”或“检测到 Unknown 格式”？
+  - 表示当前输入未匹配 ChatGPT/DeepSeek/Claude 的特定解析器，将由通用解析器尝试解析。
+  - 若导出为空，请提供文件前后数条数据样例（可打码隐私），以便完善兼容。
+
+- Windows 中文/空格路径
+  - 已使用 UTF-8 打开文件与写入；如使用 PowerShell/终端，请确保当前路径与权限正确。
+
+## 许可协议
 
 MIT
-```
-
-## 5. 许可证文件 (`LICENSE`)
-
-```text
-MIT License
-
-Copyright (c) 2024 Your Name
-
-Permission is hereby granted...
-```
-
-## 发布流程
-
-### 1. 本地开发和测试
-
-```bash
-# 进入项目目录
-cd chatgpt-to-md
-
-# 安装为开发模式
-pip install -e .
-
-# 测试功能
-chatgpt-to-md test_conversation.zip -o ./test_output
-```
-
-### 2. 构建包
-
-```bash
-# 安装构建工具
-pip install build
-
-# 构建包
-python -m build
-```
-
-这会生成 `dist/` 目录，包含 `.whl` 和 `.tar.gz` 文件。
-
-### 3. 发布到 PyPI
-
-```bash
-# 安装上传工具
-pip install twine
-
-# 上传到 PyPI
-twine upload dist/*
-```
-
-## 使用方式
-
-### 作为用户安装使用
-
-```bash
-# 从PyPI安装
-pip install chatgpt-to-md
-
-# 使用
-chatgpt-to-md my_chatgpt_data.zip -o ./conversations
-```
-
-### 作为开发者使用
-
-```python
-from chatgpt_to_md import convert
-
-# 在代码中使用
-convert("path/to/chatgpt.zip", "./output_directory")
-```
-
-## 项目特点
-
-1. **最简依赖**: 只使用Python标准库，无外部依赖
-2. **单一功能**: 专注完成一个核心任务
-3. **易于理解**: 代码结构清晰，便于学习和修改
-4. **即装即用**: 安装后直接通过命令行使用
-5. **标准化**: 符合Python包发布标准
-
-这个架构让你能够：
-- ✅ 快速理解整个发布流程
-- ✅ 轻松维护和扩展
-- ✅ 让其他用户方便安装使用
-- ✅ 符合Python生态系统标准
