@@ -87,6 +87,11 @@ def _convert_single(conversation, output_dir):
             msg = value['message']
             if msg.get('content') and msg.get('author'):
                 content_parts = msg['content'].get('parts', [''])
+                # 过滤parts中的非字符串元素，只保留字符串文本
+                if isinstance(content_parts, list):
+                    content_parts = [part for part in content_parts if isinstance(part, str)]
+                else:
+                    content_parts = []
                 content = ''.join(content_parts) if content_parts else ''
                 
                 if content.strip():
