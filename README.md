@@ -12,8 +12,6 @@
 
 ## 安装
 
-本项目尚未发布到 PyPI。请在源码目录内安装：
-
 ```bash
 pip install ai-conversation-exporter
 ```
