@@ -79,6 +79,27 @@ ai-export conversations.json -o ./ai_output
 - Windows 中文/空格路径
   - 已使用 UTF-8 打开文件与写入；如使用 PowerShell/终端，请确保当前路径与权限正确。
 
+## 简版实现（`simple/`）
+
+> 独立的单文件脚本，无需安装任何依赖，适合快速使用或学习数据结构。
+
+```
+simple/
+├── ChatGPT/
+│   ├── main.py   # 完整版：树形路径选择，只保留最终采用的对话版本
+│   └── mini.py   # 简版：扁平遍历所有节点，快速导出
+├── DeepSeek/
+│   ├── main.py   # 完整版：fragments 解析 + parent_id 去重
+│   └── mini.py   # 简版：扁平遍历
+└── README.md     # 简版实现说明文档
+```
+
+**使用方式**：编辑对应脚本顶部的 `ZIP_FILE` / `OUTPUT_DIR` 路径，直接 `python main.py` 运行即可，无需安装。
+
+详细说明见 [`simple/README.md`](simple/README.md)。
+
+---
+
 ## 许可协议
 
 MIT
